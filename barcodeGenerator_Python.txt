@@ -1,0 +1,59 @@
+#######################################################################################################################
+# All libraries and modules used
+#######################################################################################################################
+
+from tkinter import filedialog
+import pymsgbox as pmb
+from tkinter import *
+import pyqrcode
+
+
+#######################################################################################################################
+# Defining Commands
+#######################################################################################################################
+
+
+def barcode_gen():
+    try:
+        bg_frame = Tk()
+        bg_image = PhotoImage(file=r"D:\Projects\Python_Projects\Project_Files\Jarvis_Files\Icon_icon_Bg_Pics"
+                                   r"\barcode2_BG"
+                                   r".png")
+        # Above paste location of pic you Wanna use as Background Pic
+
+        frame1 = Frame(bg_frame, height="430", bg="black")
+        frame1.pack(fill=X)
+        bg_label = Label(frame1, image=bg_image)
+        bg_label.place(x=0, y=0)
+        label = Label(frame1, text="Enter link below to create barcode", font="Damascus, 20", bg="black", fg='blue',
+                      width=30)
+        label.place(x=75, y=80)
+        entry = Entry(frame1, width=35, font=5, bg="grey")
+        entry.place(x=130, y=180)
+        entry.insert(0, "Type Here")
+
+        def gen():
+            files = [("SVG files", "*.svg")]
+            file = filedialog.asksaveasfile(filetypes=files, defaultextension=files)
+            url = pyqrcode.create(entry.get())
+            entry.delete(0, END)
+            url.svg(file.name, scale=8)
+            pmb.alert('Barcode created Successfully', 'Barcode', 'OK')
+
+        btn = Button(frame1, text="GENERATE", width="20", font="bold, 12", command=gen, bg='yellow')
+        btn.place(x=220, y=240)
+        bg_frame.geometry("610x430+450+0")
+        bg_frame.resizable(False, False)
+        bg_frame.iconbitmap("D:\\Projects\\Python_Projects\\Project_Files\\Jarvis_Files\\Icon_icon_Bg_Pics"
+                            "\\BarcodeGenerator.ico")
+        # Above paste location of pic you Wanna use as Icon Pic (Pic should be in .ico format)
+
+        bg_frame.title("Barcode Generator")
+        bg_frame.mainloop()
+    except Exception as bg_error:
+        print(bg_error)
+        pmb.alert('Error Written in Error Folder', 'Barcode Error', 'OK')  # For an alert notification
+
+
+if __name__ == "__main__":
+    barcode_gen()
